@@ -1,6 +1,6 @@
 console.log('started');
 const promise = new Promise((resolve, reject) => {
-    setTimeout(()=>resolve("resolved"), 2000)
+    setTimeout(() => resolve("resolved"), 2000)
 })
 
 // promise.then(data => console.log(data));
@@ -17,7 +17,8 @@ class MyPromise {
 
     then = (cb) => {
         this.resolveCB = cb;
-        if(this.isFulfilled && !this.isCalled) {
+        console.log(this)
+        if (this.isFulfilled && !this.isCalled) {
             this.isCalled = true;
             this.resolve(this.successData);
         }
@@ -26,7 +27,7 @@ class MyPromise {
 
     catch = (cb) => {
         this.rejectCB = cb;
-         if(this.isFulfilled && !this.isCalled) {
+        if (this.isFulfilled && !this.isCalled) {
             this.isCalled = true;
             this.reject(this.errorData);
         }
@@ -36,24 +37,28 @@ class MyPromise {
     resolve = (successData) => {
         this.isFulfilled = true;
         this.successData = successData;
-        if(typeof this.resolveCB == 'function') {
+        console.log(typeof this.resolveCB)
+        if (typeof this.resolveCB == 'function') {
             this.resolveCB(this.successData);
-            this.isCalled=true;
+            this.isCalled = true;
         }
     }
 
     reject = (errorData) => {
         this.isFulfilled = true;
         this.errorData = errorData;
-        if(typeof this.resolveCB == 'function') {
+        if (typeof this.rejectCB == 'function') {
             this.rejectCB();
-            this.isCalled=true;
+            this.isCalled = true;
         }
     }
 }
 
 const myPromise = new MyPromise((resolve, reject) => {
-    resolve("resolved")
+    console.log('before');
+    setTimeout(() => {
+        resolve("resolved")
+    }, 2000)
 })
 
 myPromise.then((data) => console.log(data))
